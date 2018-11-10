@@ -1,78 +1,79 @@
 
-
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: patient-details-service
+  name: patient-service
   
   labels:
-    app: patient-details-service
+    app: patient-service
 spec:
   type: NodePort
   ports:
-  - port: 3000
-    name: http-patient-details
+  - port: 2000
+    name: http-patient-service
   selector:
-    app: patient-details-service
+    app: patient-service
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: patient-details-service-v1
+  name: patient-service-v1
   
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: patient-details-service
+        app: patient-service
         version: v1
     spec:
       containers:
-      - name: patient-details-service
-        image: frankiennamdi/patientdetailsservice:latest
+      - name: patient-service
+        image: frankiennamdi/patientservice:latest
         resources:
           requests:
             cpu: "100m"
         imagePullPolicy: IfNotPresent #Always
         ports:
-        - containerPort: 3000
+        - containerPort: 2000
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: patient-details-service-v2
+  name: patient-service-v2
   
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: patient-details-service
+        app: patient-service
         version: v2
     spec:
       containers:
-      - name: patient-details-service
-        image: frankiennamdi/patientdetailsservice:latest
+      - name: patient-service
+        image: frankiennamdi/patientservice:latest
         resources:
           requests:
             cpu: "100m"
         imagePullPolicy: IfNotPresent #Always
         ports:
-        - containerPort: 3000
+        - containerPort: 2000
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: patient-details-service
+  name: patient-service
+  
   annotations:
     kubernetes.io/ingress.class: "istio"
 spec:
   rules:
   - http:
       paths:
-      - path: /details-service.*
+      - path: /data-service.*
         backend:
-          serviceName: patient-details-service
-          servicePort: 3000
+          serviceName: patient-service
+          servicePort: 2000
 ---

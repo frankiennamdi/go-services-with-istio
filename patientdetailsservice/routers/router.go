@@ -6,7 +6,7 @@ import (
 )
 
 func setRoutes(router *mux.Router) *mux.Router {
-	router.HandleFunc("/patient/details/{id}", controllers.Details).Methods("GET")
+	router.HandleFunc("/details-service/patient/{id}", controllers.Details).Methods("GET")
 	return router
 }
 
