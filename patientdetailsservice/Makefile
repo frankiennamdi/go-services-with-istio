@@ -16,3 +16,4 @@ undeploy-local:
 
 view-local:
 	kubectl get no,po,deployments,svc
+	
