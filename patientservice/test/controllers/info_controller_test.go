@@ -21,16 +21,15 @@ import (
 func TestDetailsHandler(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	testPatientDetail := models.PatientDetail{PatientName: "Franklin Ejoh",
-		PatientAge: 5, PatientInsurance: "Blue Cross"}
+	testPatientDetail := models.PatientDetail{PatientName: "Franklin Ejoh", PatientAge: 5,
+		PatientInsurance: "Blue Cross"}
 
-	patientDetailServiceUrl := "http://patient-details-service:3000/patient"
+	patientDetailServiceUrl := "http://patient-details-service:3000"
 
 	expectedPatientDetail, err := json.Marshal(testPatientDetail)
 	expectedPatient, err := json.Marshal(models.PatientInfo{PatientDetail: testPatientDetail})
 
-	httpmock.RegisterResponder("GET",
-		fmt.Sprintf("%s/%d", patientDetailServiceUrl, 2),
+	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/patient/%d", patientDetailServiceUrl, 2),
 		httpmock.NewStringResponder(200, string(expectedPatientDetail)))
 
 	req, err := http.NewRequest("GET", "/data-service/patients/2", nil)

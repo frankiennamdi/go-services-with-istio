@@ -1,3 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-config
+  namespace: default
+data:
+  PATIENT_SERVICE_DETAILS_URL: http://patient-details-service:3000/details-service
 
 ---
 apiVersion: v1
@@ -19,7 +27,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: patient-service-v1
-  
 spec:
   replicas: 1
   template:
@@ -34,7 +41,10 @@ spec:
         resources:
           requests:
             cpu: "100m"
-        imagePullPolicy: IfNotPresent #Always
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: special-config
         ports:
         - containerPort: 2000
 ---
@@ -57,6 +67,9 @@ spec:
         resources:
           requests:
             cpu: "100m"
+        envFrom:
+          - configMapRef:
+              name: special-config
         imagePullPolicy: IfNotPresent #Always
         ports:
         - containerPort: 2000
