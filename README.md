@@ -15,6 +15,10 @@ A service that returns the details of a patient.
 
 A service that returns information about the patient which includes data from the details service. 
 
+## Build and Deploy 
+make patientservice test build deploy-local
+make patientdetailsservice test build deploy-local
+
 ## Improvements
 
 * upgrade istio 

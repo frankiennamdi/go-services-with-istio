@@ -5,15 +5,14 @@ test:
 	go test ./... -v
 
 build:
-	dep ensure && docker build --no-cache -t frankiennamdi/patientdetailsservice -f "${PWD}/Dockerfile" .
+	dep ensure && docker build --no-cache -t frankiennamdi/patientdetailsservice .
 
 deploy-local: SHELL := /bin/bash
 deploy-local:
-	kubectl apply -f <(istioctl kube-inject -f "${PWD}/kube/deployment-istio.yml")
+	kubectl apply -f <(istioctl kube-inject -f "./kube/deployment-istio.yml")
 
 undeploy-local: 
 	kubectl delete -f kube/deployment-istio.yml
 
 view-local:
 	kubectl get no,po,deployments,svc
-	
