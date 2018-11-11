@@ -33,7 +33,7 @@ func Status(w http.ResponseWriter, r *http.Request) {
 func Details(config *config.Config, w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	patientId, err := strconv.Atoi(vars["id"])
-	url := fmt.Sprintf("%s/%d", config.PatientDetailServiceUrl, patientId)
+	url := fmt.Sprintf("%s/patient/%d", config.PatientDetailServiceUrl, patientId)
 	log.Printf("Retrieving detail for patient %s", url)
 
 	response, err := http.Get(url)
