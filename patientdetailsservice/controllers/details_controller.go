@@ -10,6 +10,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func Status(w http.ResponseWriter, r *http.Request) {
+	log.Println("Service is up")
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("up"))
+}
+
 // Handler for HTTP Get - "/patient/{id}/details"
 func Details(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)

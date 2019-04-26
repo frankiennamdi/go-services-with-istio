@@ -1,5 +1,5 @@
 SUBDIRS := patientservice patientdetailsservice
-.PHONY: $(SUBDIRS)
+.PHONY: all $(SUBDIRS)
 
 target = $(filter-out $@,$(MAKECMDGOALS))
 $(SUBDIRS):

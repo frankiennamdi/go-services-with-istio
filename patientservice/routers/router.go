@@ -8,8 +8,8 @@ import (
 
 func setRoutes(config *config.Config, router *mux.Router) *mux.Router {
 	httpHandler := controllers.Handler{Config: config, Handle: controllers.Details}
-	router.Handle("/data-service/patients/{id}", httpHandler).Methods("GET")
-	router.HandleFunc("/data-service/healthcheck/status", controllers.Status).Methods("GET")
+	router.Handle("/patient-service/patients/{id}", httpHandler).Methods("GET")
+	router.HandleFunc("/patient-service/healthcheck/status", controllers.Status).Methods("GET")
 	return router
 }
 

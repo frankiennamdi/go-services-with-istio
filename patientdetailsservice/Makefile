@@ -9,10 +9,11 @@ build:
 
 deploy-local: SHELL := /bin/bash
 deploy-local:
-	kubectl apply -f <(istioctl kube-inject -f "./kube/deployment-istio.yml")
+	kubectl apply -f <(istioctl kube-inject -f "./kube/deployment-istio-1.yml")
+	#kubectl apply -f "./kube/deployment-istio-1.yml"
 
 undeploy-local: 
-	kubectl delete -f kube/deployment-istio.yml
+	kubectl delete -f ./kube/deployment-istio-1.yml
 
 view-local:
 	kubectl get no,po,deployments,svc

@@ -1,0 +1,97 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-config
+  namespace: default
+data:
+  PATIENT_SERVICE_DETAILS_URL: http://patient-details-service:3000/details-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: patient-service
+  
+  labels:
+    app: patient-service
+spec:
+  type: NodePort
+  ports:
+  - port: 2000
+    name: http-patient-service
+  selector:
+    app: patient-service
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: patient-service-v1
+  
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: patient-service
+        version: v1
+    spec:
+      containers:
+      - name: patient-service
+        image: frankiennamdi/patientservice:latest
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: special-config
+        ports:
+        - containerPort: 2000
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: patient-service-v2
+  
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: patient-service
+        version: v2
+    spec:
+      containers:
+      - name: patient-service
+        image: frankiennamdi/patientservice:latest
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: special-config
+        ports:
+        - containerPort: 2000
+        
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: patient-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - http-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /patient-service
+    route:
+    - destination:
+        host: patient-service
+        port:
+          number: 2000

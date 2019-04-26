@@ -32,7 +32,7 @@ func TestDetailsHandler(t *testing.T) {
 	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/patient/%d", patientDetailServiceUrl, 2),
 		httpmock.NewStringResponder(200, string(expectedPatientDetail)))
 
-	req, err := http.NewRequest("GET", "/data-service/patients/2", nil)
+	req, err := http.NewRequest("GET", "/patient-service/patients/2", nil)
 	req = mux.SetURLVars(req, map[string]string{
 		"id": "2",
 	})

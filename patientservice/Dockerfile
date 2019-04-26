@@ -1,4 +1,4 @@
-FROM golang:1.10.0-alpine as builder
+FROM golang:1.11.0-alpine as builder
 ADD . /go/src/github.com/frankiennamdi/go-services-with-istio/patientservice
 RUN go install github.com/frankiennamdi/go-services-with-istio/patientservice
 
