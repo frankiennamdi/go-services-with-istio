@@ -1,9 +1,16 @@
 FROM golang:1.11.0-alpine as builder
-ADD . /go/src/github.com/frankiennamdi/go-services-with-istio/patientservice
-RUN go install github.com/frankiennamdi/go-services-with-istio/patientservice
+RUN apk add git
+COPY ./patientservice/go.mod ./patientservice/go.sum /
+COPY ./patientservice /patientservice
+WORKDIR /
+RUN go mod download
+RUN CGO_ENABLED=0  go build -o /app/patientservice
 
 FROM alpine as runner
-RUN apk add --no-cache curl
-COPY --from=builder /go/bin/patientservice /go/bin/patientservice
-CMD ./go/bin/patientservice
+RUN apk add --update \
+    curl \
+    && rm -rf /var/cache/apk/*
+COPY --from=builder /app/patientservice /app/patientservice
+ENTRYPOINT /app/patientservice
 EXPOSE 2000
+

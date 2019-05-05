@@ -1,13 +1,12 @@
-
+SHELL := /bin/bash
 .PHONY: test build deploy
 .DEFAULT_GOAL := test
 test:
 	go test ./... -v
 
 build:
-	dep ensure && docker build --no-cache -t frankiennamdi/patientdetailsservice .
+	go mod tidy && docker build --no-cache -t frankiennamdi/patientdetailsservice -f ${PWD}/patientdetailsservice/Dockerfile ${PWD}
 
-deploy-local: SHELL := /bin/bash
 deploy-local:
 	kubectl apply -f <(istioctl kube-inject -f "./kube/deployment-istio-1.yml")
 	#kubectl apply -f "./kube/deployment-istio-1.yml"
