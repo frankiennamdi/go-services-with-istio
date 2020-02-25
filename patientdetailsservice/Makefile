@@ -1,7 +1,11 @@
 SHELL := /bin/bash
 .PHONY: test build deploy
 .DEFAULT_GOAL := test
-test:
+
+dependencies:
+	go mod vendor; go mod tidy
+
+test: dependencies
 	go test ./... -v
 
 build:

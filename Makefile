@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 SUBDIRS := patientservice patientdetailsservice
 .PHONY: all $(SUBDIRS)
 
@@ -9,7 +10,7 @@ $(SUBDIRS):
 
 .SILENT: test duild deploy-local undeploy-local
 
-test build deploy-local undeploy-local view-local: 
+test build deploy-local undeploy-local view-local:
 	@echo # do nothing
 
 	
